@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
 
 void main() {
+  // Data barang
+  String namaBarang = "Buku Tulis";
+  double hargaAnggota = 3000.0;
+  double hargaUmum = 3500.0;
+  int stok = 40;
+  bool tersedia = true;
+
+  // Pembelian
+  int jumlah = 3;
+
+  // Perhitungan
+  double totalAnggota = jumlah * hargaAnggota;
+  double totalUmum = jumlah * hargaUmum;
+  double selisih = totalUmum - totalAnggota;
+
+  // Output
+  print("=== KARTU DATA BARANG ===");
+  print("Nama : $namaBarang");
+  print("Harga Anggota : Rp$hargaAnggota");
+  print("Harga Umum : Rp$hargaUmum");
+  print("Stok : $stok");
+  print("Tersedia : $tersedia");
+  print("Total (anggota) $jumlah pcs : Rp$totalAnggota");
+  print("Selisih vs umum : Rp$selisih");
+
   runApp(const MyApp());
 }
+// Pemilihan tipe data yang tepat membuat data barang dan perhitungan harga menjadi akurat.
+// Misalnya, harga menggunakan double agar dapat menyimpan nilai uang, sedangkan stok menggunakan int karena jumlah barang tidak boleh pecahan.
+// Dengan tipe data yang sesuai, kesalahan perhitungan pada kasir koperasi dapat dihindari.
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -28,9 +56,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Aplikasi Pencatatan'),
     );
   }
 }
@@ -104,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
+            const Text('Selamat Datang di Aplikasi Pencatatan'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
