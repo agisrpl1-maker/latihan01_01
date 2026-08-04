@@ -3,28 +3,63 @@ import 'package:flutter/material.dart';
 void main() {
   // Data barang
   String namaBarang = "Buku Tulis";
-  double hargaAnggota = 3000.0;
-  double hargaUmum = 3500.0;
-  int stok = 40;
-  bool tersedia = true;
+  int hargaAnggota = 3000;
+  int hargaUmum = 3500;
+  int jumlah = 40;
+  bool anggota = true;
+  String kategori = "atk";
 
-  // Pembelian
-  int jumlah = 3;
+  // Switch lebih rapi daripada deretan if-else karena hanya membandingkan satu
+  // nilai dengan beberapa kemungkinan (one value, many cases). Kode jadi
+  // terbaca langsung kategorinya ke rak mana, tanpa perlu menulis ulang
+  // kondisi "kategori ==" berkali-kali.
+  String rak;
+  switch (kategori) {
+    case "atk":
+      rak = "Rak 1";
+      break;
+    case "makanan":
+      rak = "Rak 2";
+      break;
+    case "minuman":
+      rak = "Rak 3";
+      break;
+    default:
+      rak = "Rak lain";
+  }
 
-  // Perhitungan
-  double totalAnggota = jumlah * hargaAnggota;
-  double totalUmum = jumlah * hargaUmum;
-  double selisih = totalUmum - totalAnggota;
+  // Menentukan harga berdasarkan status anggota
+  int harga = hargaUmum;
+  if (anggota) {
+    harga = hargaAnggota;
+  }
+
+  // Menghitung total
+  double total = (jumlah * harga).toDouble();
+  double potongan = 0;
+
+  // If bertingkat untuk potongan
+  if (total > 200000) {
+    potongan = total * 0.10;
+  } else if (total > 100000) {
+    potongan = total * 0.05;
+  } else {
+    potongan = 0;
+  }
+
+  // Harga akhir
+  double hargaAkhir = total - potongan;
 
   // Output
-  print("=== KARTU DATA BARANG ===");
-  print("Nama : $namaBarang");
-  print("Harga Anggota : Rp$hargaAnggota");
-  print("Harga Umum : Rp$hargaUmum");
-  print("Stok : $stok");
-  print("Tersedia : $tersedia");
-  print("Total (anggota) $jumlah pcs : Rp$totalAnggota");
-  print("Selisih vs umum : Rp$selisih");
+  print("=== TRANSAKSI KOPERASI ===");
+  print("Nama Barang : $namaBarang");
+  print("Status Anggota : $anggota");
+  print("Kategori : $kategori ($rak)");
+  print("Harga Satuan : Rp$harga");
+  print("Jumlah : $jumlah");
+  print("Total : Rp$total");
+  print("Potongan : Rp$potongan");
+  print("Harga Akhir : Rp$hargaAkhir");
 
   runApp(const MyApp());
 }
