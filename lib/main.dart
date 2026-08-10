@@ -20,7 +20,12 @@ class Barang {
     print("Harga    : Rp$harga");
     print("Stok     : $stok");
     print("Tersedia : $tersedia");
+    print("Nilai Stok: Rp${nilaiStok()}");
     print("==============================");
+  }
+
+  double nilaiStok() {
+    return harga * stok;
   }
 }
 
