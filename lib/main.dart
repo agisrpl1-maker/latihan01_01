@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+
 class Barang {
   String nama;
   double harga;
   int stok;
   bool tersedia;
 
-  // Konstruktor
   Barang({
     required this.nama,
     required this.harga,
@@ -14,19 +14,17 @@ class Barang {
   });
 
   void tampilkan() {
-    print("=================================");
-    print("       KARTU DATA BARANG");
-    print("=================================");
+    print("==============================");
+    print("KARTU DATA BARANG");
     print("Nama     : $nama");
     print("Harga    : Rp$harga");
     print("Stok     : $stok");
     print("Tersedia : $tersedia");
-    print("=================================");
+    print("==============================");
   }
 }
 
 void main() {
-
   Barang bukuTulis = Barang(
     nama: "Buku Tulis",
     harga: 3000,
@@ -44,17 +42,25 @@ void main() {
   Barang roti = Barang(
     nama: "Roti",
     harga: 5000,
-    stok: 0,
-    tersedia: false,
+    stok: 10,
+    tersedia: true,
   );
 
+  List<Barang> daftarBarang = [
+    bukuTulis,
+    pulpen,
+    roti,
+  ];
 
-  bukuTulis.tampilkan();
-  pulpen.tampilkan();
-  roti.tampilkan();
+  print("=== DAFTAR BARANG KOPERASI ===");
+
+  for (Barang barang in daftarBarang) {
+    barang.tampilkan();
+  }
 
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -70,8 +76,7 @@ class MyApp extends StatelessWidget {
       home: const Scaffold(
         body: Center(
           child: Text(
-            "Data Barang Koperasi\n"
-            "Lihat hasil di Debug Console",
+            "Data Barang Koperasi\nLihat hasil di Debug Console",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20),
           ),
