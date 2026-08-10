@@ -24,6 +24,12 @@ class Barang {
   }
 }
 
+// Keuntungan memodelkan barang sebagai objek adalah setiap data barang,
+// seperti nama, harga, stok, dan status tersedia, tersimpan dalam satu
+// kesatuan sehingga kode lebih rapi dan mudah dikelola. Ke depan, sistem
+// koperasi juga lebih mudah dikembangkan karena cukup menambahkan atribut
+// atau method baru pada kelas Barang tanpa harus mengubah banyak bagian kode.
+
 void main() {
   Barang bukuTulis = Barang(
     nama: "Buku Tulis",
