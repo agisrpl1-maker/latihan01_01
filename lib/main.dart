@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+// Nilai stok berguna untuk mengetahui perkiraan nilai aset barang
+// yang masih dimiliki koperasi. Angka ini membantu koperasi membuat
+// laporan aset dan mengetahui total nilai persediaan barang.
 class Barang {
   String nama;
   double harga;
@@ -12,6 +14,10 @@ class Barang {
     required this.stok,
     required this.tersedia,
   });
+
+  bool bisaDijual(int diminta) {
+  return stok >= diminta;
+}
 
   void tampilkan() {
     print("==============================");
@@ -36,12 +42,15 @@ class Barang {
 // atau method baru pada kelas Barang tanpa harus mengubah banyak bagian kode.
 
 void main() {
-  Barang bukuTulis = Barang(
-    nama: "Buku Tulis",
-    harga: 3000,
-    stok: 20,
-    tersedia: true,
-  );
+Barang bukuTulis = Barang(
+  nama: "Buku Tulis",
+  harga: 3000,
+  stok: 20,
+  tersedia: true,
+);
+
+print("Bisa dijual 5: ${bukuTulis.bisaDijual(5)}");
+print("Bisa dijual 25: ${bukuTulis.bisaDijual(25)}");
 
   Barang pulpen = Barang(
     nama: "Pulpen",
