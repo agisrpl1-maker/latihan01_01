@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+
 // Nilai stok berguna untuk mengetahui perkiraan nilai aset barang
 // yang masih dimiliki koperasi. Angka ini membantu koperasi membuat
 // laporan aset dan mengetahui total nilai persediaan barang.
+
+class Pembeli {
+  String nama;
+  bool statusAnggota;
+
+  Pembeli({
+    required this.nama,
+    required this.statusAnggota,
+  });
+}
+
+// Pembeli dan Barang memiliki relasi association karena pembeli dapat
+// membeli satu atau lebih barang dalam sebuah transaksi. Data Pembeli
+// menyimpan identitas dan status anggota, sedangkan Barang menyimpan
+// informasi barang yang dibeli.
+
 class Barang {
   String nama;
   double harga;
@@ -16,22 +33,27 @@ class Barang {
   });
 
   bool bisaDijual(int diminta) {
-  return stok >= diminta;
-}
+    return stok >= diminta;
+  }
+
+// Pengecekan di dalam objek Barang lebih baik karena aturan stok
+// berada langsung bersama data barang. Dengan begitu, kode lebih
+// aman, rapi, mudah digunakan kembali, dan mencegah penjualan
+// melebihi stok.
+
+  double nilaiStok() {
+    return harga * stok;
+  }
 
   void tampilkan() {
     print("==============================");
     print("KARTU DATA BARANG");
-    print("Nama     : $nama");
-    print("Harga    : Rp$harga");
-    print("Stok     : $stok");
-    print("Tersedia : $tersedia");
+    print("Nama      : $nama");
+    print("Harga     : Rp$harga");
+    print("Stok      : $stok");
+    print("Tersedia  : $tersedia");
     print("Nilai Stok: Rp${nilaiStok()}");
     print("==============================");
-  }
-
-  double nilaiStok() {
-    return harga * stok;
   }
 }
 
@@ -42,15 +64,13 @@ class Barang {
 // atau method baru pada kelas Barang tanpa harus mengubah banyak bagian kode.
 
 void main() {
-Barang bukuTulis = Barang(
-  nama: "Buku Tulis",
-  harga: 3000,
-  stok: 20,
-  tersedia: true,
-);
-
-print("Bisa dijual 5: ${bukuTulis.bisaDijual(5)}");
-print("Bisa dijual 25: ${bukuTulis.bisaDijual(25)}");
+  // Membuat objek barang
+  Barang bukuTulis = Barang(
+    nama: "Buku Tulis",
+    harga: 3000,
+    stok: 20,
+    tersedia: true,
+  );
 
   Barang pulpen = Barang(
     nama: "Pulpen",
@@ -66,6 +86,22 @@ print("Bisa dijual 25: ${bukuTulis.bisaDijual(25)}");
     tersedia: true,
   );
 
+  Pembeli pembeli = Pembeli(
+    nama: "Andi",
+    statusAnggota: true,
+  );
+
+  print("=== DATA PEMBELI ===");
+  print("Nama: ${pembeli.nama}");
+  print("Anggota: ${pembeli.statusAnggota}");
+  print("");
+
+  // Mengecek stok barang
+  print("=== CEK STOK ===");
+  print("Bisa dijual 5 Buku Tulis: ${bukuTulis.bisaDijual(5)}");
+  print("Bisa dijual 25 Buku Tulis: ${bukuTulis.bisaDijual(25)}");
+  print("");
+
   List<Barang> daftarBarang = [
     bukuTulis,
     pulpen,
@@ -80,7 +116,6 @@ print("Bisa dijual 25: ${bukuTulis.bisaDijual(25)}");
 
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
