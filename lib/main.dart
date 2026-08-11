@@ -1,140 +1,110 @@
 import 'package:flutter/material.dart';
 
-// Nilai stok berguna untuk mengetahui perkiraan nilai aset barang
-// yang masih dimiliki koperasi. Angka ini membantu koperasi membuat
-// laporan aset dan mengetahui total nilai persediaan barang.
-
-class Pembeli {
-  String nama;
-  bool statusAnggota;
-
-  Pembeli({
-    required this.nama,
-    required this.statusAnggota,
-  });
-}
-
-// Pembeli dan Barang memiliki relasi association karena pembeli dapat
-// membeli satu atau lebih barang dalam sebuah transaksi. Data Pembeli
-// menyimpan identitas dan status anggota, sedangkan Barang menyimpan
-// informasi barang yang dibeli.
-
 class Barang {
   String nama;
   double harga;
-  int stok;
+  int _stok;
   bool tersedia;
 
   Barang({
     required this.nama,
     required this.harga,
-    required this.stok,
+    required int stok,
     required this.tersedia,
-  });
+  }) : _stok = stok;
 
-  bool bisaDijual(int diminta) {
-    return stok >= diminta;
+  // Getter untuk membaca stok
+  int get stok => _stok;
+
+  // Menjual barang jika stok mencukupi
+  bool jual(int n) {
+    if (n <= 0) {
+      return false;
+    }
+
+    if (n <= _stok) {
+      _stok -= n;
+
+      if (_stok == 0) {
+        tersedia = false;
+      }
+
+      return true;
+    }
+
+    return false;
   }
-
-// Pengecekan di dalam objek Barang lebih baik karena aturan stok
-// berada langsung bersama data barang. Dengan begitu, kode lebih
-// aman, rapi, mudah digunakan kembali, dan mencegah penjualan
-// melebihi stok.
 
   double nilaiStok() {
-    return harga * stok;
+    return harga * _stok;
   }
-
+// Melindungi _stok penting bagi integritas data koperasi agar jumlah
+// stok tidak dapat diubah sembarangan dari luar class. Perubahan stok
+// hanya dilakukan melalui method jual() sehingga stok tetap akurat,
+// tidak menjadi negatif, dan sesuai dengan transaksi yang terjadi.
   void tampilkan() {
     print("==============================");
     print("KARTU DATA BARANG");
     print("Nama      : $nama");
     print("Harga     : Rp$harga");
-    print("Stok      : $stok");
+    print("Stok      : $_stok");
     print("Tersedia  : $tersedia");
     print("Nilai Stok: Rp${nilaiStok()}");
     print("==============================");
   }
 }
+class BarangPromo extends Barang {
+  double diskon;
 
-// Keuntungan memodelkan barang sebagai objek adalah setiap data barang,
-// seperti nama, harga, stok, dan status tersedia, tersimpan dalam satu
-// kesatuan sehingga kode lebih rapi dan mudah dikelola. Ke depan, sistem
-// koperasi juga lebih mudah dikembangkan karena cukup menambahkan atribut
-// atau method baru pada kelas Barang tanpa harus mengubah banyak bagian kode.
+  BarangPromo({
+    required String nama,
+    required double harga,
+    required int stok,
+    required bool tersedia,
+    required this.diskon,
+  }) : super(
+          nama: nama,
+          harga: harga,
+          stok: stok,
+          tersedia: tersedia,
+        );
+
+  double hargaPromo() {
+    return harga - (harga * diskon / 100);
+  }
+}
 
 void main() {
-  // Membuat objek barang
   Barang bukuTulis = Barang(
     nama: "Buku Tulis",
     harga: 3000,
-    stok: 20,
-    tersedia: true,
-  );
-
-  Barang pulpen = Barang(
-    nama: "Pulpen",
-    harga: 2500,
-    stok: 15,
-    tersedia: true,
-  );
-
-  Barang roti = Barang(
-    nama: "Roti",
-    harga: 5000,
     stok: 10,
     tersedia: true,
   );
 
-  Pembeli pembeli = Pembeli(
-    nama: "Andi",
-    statusAnggota: true,
-  );
+  print("Stok awal: ${bukuTulis.stok}");
 
-  print("=== DATA PEMBELI ===");
-  print("Nama: ${pembeli.nama}");
-  print("Anggota: ${pembeli.statusAnggota}");
-  print("");
+  bool berhasil = bukuTulis.jual(3);
 
-  // Mengecek stok barang
-  print("=== CEK STOK ===");
-  print("Bisa dijual 5 Buku Tulis: ${bukuTulis.bisaDijual(5)}");
-  print("Bisa dijual 25 Buku Tulis: ${bukuTulis.bisaDijual(25)}");
-  print("");
+  print("Penjualan 3 barang berhasil: $berhasil");
+  print("Stok setelah penjualan: ${bukuTulis.stok}");
 
-  List<Barang> daftarBarang = [
-    bukuTulis,
-    pulpen,
-    roti,
-  ];
+  bool gagal = bukuTulis.jual(10);
 
-  print("=== DAFTAR BARANG KOPERASI ===");
-
-  for (Barang barang in daftarBarang) {
-    barang.tampilkan();
-  }
-
-  runApp(const MyApp());
+  print("Penjualan 10 barang berhasil: $gagal");
+  print("Stok setelah percobaan: ${bukuTulis.stok}");
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Data Barang Koperasi',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
-        ),
-      ),
+      title: 'Barang Promo',
       home: const Scaffold(
         body: Center(
-          child: Text(
-            "Data Barang Koperasi\nLihat hasil di Debug Console",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20),
-          ),
+          child: Text("Barang Promo"),
         ),
       ),
     );
