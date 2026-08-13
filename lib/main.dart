@@ -73,26 +73,48 @@ class BarangPromo extends Barang {
     return harga - (harga * diskon / 100);
   }
 }
-
+// Penanganan galat meningkatkan kepercayaan pengurus pada sistem
+// karena kesalahan input tidak langsung menghentikan program.
+// Sistem memberikan pesan yang jelas dan tetap mencatat transaksi,
+// sehingga proses kasir lebih aman dan dapat diandalkan.
 void main() {
-  Barang bukuTulis = Barang(
-    nama: "Buku Tulis",
-    harga: 3000,
-    stok: 10,
-    tersedia: true,
-  );
+  // Pengujian input angka yang benar
+  prosesBeli("2");
 
-  print("Stok awal: ${bukuTulis.stok}");
+  print("");
 
-  bool berhasil = bukuTulis.jual(3);
+  // Pengujian input yang salah
+  prosesBeli("dua");
 
-  print("Penjualan 3 barang berhasil: $berhasil");
-  print("Stok setelah penjualan: ${bukuTulis.stok}");
+  runApp(const MyApp());
+}
 
-  bool gagal = bukuTulis.jual(10);
+void prosesBeli(String inputJumlah) {
+  try {
+    int jumlah = int.parse(inputJumlah);
 
-  print("Penjualan 10 barang berhasil: $gagal");
-  print("Stok setelah percobaan: ${bukuTulis.stok}");
+    if (jumlah <= 0) {
+      print("Jumlah harus lebih dari 0.");
+      return;
+    }
+
+    int stok = 10;
+
+    if (jumlah > stok) {
+      print("Stok tidak mencukupi.");
+      return;
+    }
+
+    stok -= jumlah;
+
+    print("Pembelian berhasil.");
+    print("Jumlah terjual: $jumlah");
+    print("Sisa stok: $stok");
+  } catch (e) {
+    print("Input tidak valid. Silakan masukkan angka.");
+  } finally {
+    print("Transaksi dicatat di log.");
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -101,10 +123,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Barang Promo',
-      home: const Scaffold(
-        body: Center(
-          child: Text("Barang Promo"),
+      title: 'Koperasi Sekolah',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Koperasi Sekolah'),
+        ),
+        body: const Center(
+          child: Text(
+            'Lihat hasil transaksi di Debug Console',
+          ),
         ),
       ),
     );
